@@ -1,0 +1,303 @@
+/* =========================
+   REPORT MODAL
+========================= */
+
+.report-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    z-index: 3000;
+}
+
+.report-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MODAL */
+
+.report-modal {
+    position: relative;
+
+    width: 620px;
+
+    background: #dff4ff;
+
+    border-radius: 14px;
+
+    border: 1px solid #707070;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    overflow: visible;
+}
+
+/* TOP */
+
+.report-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.report-header {
+    width: 225px;
+    height: 48px;
+
+    background: #ccedff;
+
+    border-right: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+
+    border-radius: 14px 0 14px 0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+}
+
+.report-header h3 {
+    font-size: 17px;
+    font-weight: 500;
+    margin: auto;
+}
+
+.close-report {
+    width: 40px;
+    height: 40px;
+
+    background: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.close-report img {
+    width: 13px;
+}
+
+/* CONTENT */
+
+.report-content {
+    padding: 18px 22px 52px;
+}
+
+.report-subtitle {
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #555;
+
+    margin-bottom: 14px;
+}
+
+/* CARDS */
+
+.report-cards {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    margin-bottom: 18px;
+}
+
+.report-card {
+    width: 180px;
+    height: 175px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    border: 1px solid #707070;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    padding-top: 8px;
+}
+
+.report-card.active {
+    background: #f4ffef;
+    border: 3px solid #c0ffc4;
+    transform: translateY(-2px);
+}
+
+.report-card h4 {
+    font-size: 14px;
+    font-weight: 400;
+
+    margin-bottom: 8px;
+}
+
+.report-card img {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+
+    margin-bottom: 8px;
+}
+
+.report-card p {
+    width: 90%;
+
+    text-align: center;
+
+    font-size: 11px;
+    color: #666;
+}
+
+/* DATE */
+
+.report-date-wrapper {
+    position: relative;
+
+    margin-top: 10px;
+}
+
+.date-title {
+    width: 110px;
+    height: 18px;
+
+    border-radius: 20px;
+
+    border: 1px solid #707070;
+
+    background: #dcffd9;
+
+    font-size: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto -9px;
+
+    position: relative;
+    z-index: 5;
+}
+
+.report-date-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 16px;
+}
+
+.report-date-box {
+    width: 225px;
+}
+
+.report-date-box label {
+    display: block;
+
+    font-size: 12px;
+
+    color: #666;
+
+    margin-bottom: 6px;
+}
+
+.report-input-icon {
+    position: relative;
+}
+
+.report-input-icon input {
+    width: 100%;
+    height: 45px;
+
+    border-radius: 10px;
+
+    border: 1px solid #707070;
+
+    background: white;
+
+    padding: 0 40px 0 14px;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.report-input-icon img {
+    position: absolute;
+
+    right: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 10px;
+
+    pointer-events: none;
+}
+
+.date-separator {
+    margin-top: 22px;
+}
+
+/* BUTTON */
+
+.btn-generate-report {
+    position: absolute;
+
+    right: 28px;
+    bottom: -22px;
+
+    width: 130px;
+    height: 46px;
+
+    border-radius: 25px;
+
+    border: 1px solid #707070;
+
+    background: #f1f4ff;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+    z-index: 10;
+}
+
+/* DATE ICON */
+
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+}

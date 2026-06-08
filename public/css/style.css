@@ -1,0 +1,375 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+    scroll-snap-type: y mandatory;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    scroll-snap-align: start;
+}
+
+/* NAVBAR */
+.navbar {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    z-index: 10;
+}
+
+.navbar nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, #f4f6f9);
+    z-index: 2;
+}
+
+/* VIDEO */
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    z-index: 0;
+}
+
+/* OVERLAY */
+.overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to top, transparent, black);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    margin-bottom: 25px;
+    opacity: 0.9;
+    position: relative;
+}
+
+/* garis vertikal */
+.hero p::after {
+    content: "";
+    display: block;
+    width: 380px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.6);
+    margin: 15px auto 0; /* tengah + jarak dari teks */
+    border-radius: 2px;
+}
+
+/* SEARCH */
+.input-wrapper {
+    position: relative;
+    max-width: 600px;
+    margin: 40px auto 20px auto;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 20px 12px 45px;
+    border-radius: 25px;
+    border: 1.5px solid black;
+    outline: none;
+    font-size: 14px;
+}
+
+/* icon */
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    opacity: 0.6;
+}
+
+/* BUTTON */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.btn {
+    padding: 15px 40px;
+    border-radius: 7px;
+    color: black;
+    border: 1.5px solid black;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    -webkit-text-stroke: 0.2px white;
+}
+
+.btn.primary {
+    background: #4fc3f7;
+}
+
+.btn.secondary {
+    background: #e0e0e0;
+}
+
+/* FEATURES */
+.features {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+}
+
+.feature-box {
+    background: linear-gradient(to right, #ffffff, #e9edf2);
+    padding: 20px 130px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    clip-path: polygon(
+        10% 0%,
+        /* kiri atas miring */ 90% 0%,
+        /* kanan atas miring */ 100% 50%,
+        /* ujung kanan */ 90% 100%,
+        /* kanan bawah */ 10% 100%,
+        /* kiri bawah */ 0% 50% /* ujung kiri */
+    );
+}
+
+.feature-box .icon {
+    font-size: 28px;
+}
+
+.feature-box h3 {
+    margin: auto 50px;
+}
+
+.feature-box p {
+    font-size: 14px;
+    padding-right: 30px;
+    color: #555;
+}
+
+/* ================= ROLES ================= */
+.roles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 80px;
+    min-height: 100vh;
+    padding: 0 10px;
+    background: #21526c;
+    position: relative;
+    z-index: 1;
+}
+
+.roles::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, black);
+    pointer-events: none;
+}
+
+.role-card {
+    width: 220px;
+    height: 340px;
+    background: #fff0d4;
+    color: black;
+    text-align: center;
+    padding: 20px;
+    border-radius: 120px 120px 0 0;
+    transition: 0.3s;
+    position: relative;
+    box-shadow:
+        inset 0 0 0 10px transparent,
+        0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.role-card h3 {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.role-card h3::after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: black;
+    margin: 8px auto 15px auto;
+    border-radius: 2px;
+}
+
+.role-card p {
+    font-size: 12px;
+    color: black;
+}
+
+/* Glow warna */
+.role-card.admin {
+    height: 500px;
+    box-shadow:
+        inset 0 0 0 5px #e251ff,
+        0 0 12px #e251ff,
+        0 0 12px #e251ff;
+}
+.role-card.petugas {
+    height: 410px;
+    box-shadow:
+        inset 0 0 0 5px #fdbb40,
+        0 0 12px #fdbb40,
+        0 0 12px #fdbb40;
+}
+.role-card.peminjam {
+    height: 320px;
+    box-shadow:
+        inset 0 0 0 5px #40befd,
+        0 0 12px #40befd,
+        0 0 12px #40befd;
+}
+
+.role-card:hover {
+    transform: translateY(-10px);
+}
+
+.role-card .icon {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 35px auto 10px auto;
+}
+
+.role-card .icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ================= TEAM ================= */
+.team {
+    position: relative;
+    min-height: 100vh;
+    background: url("/images/bg_arona.jpg") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    z-index: 1;
+}
+
+.team::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to bottom, black, transparent);
+    pointer-events: none;
+}
+
+/* overlay gelap */
+.team .overlay2 {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.9),
+        rgba(0, 0, 0, 0.2)
+    );
+}
+
+.team h2 {
+    position: relative;
+    font-size: 40px;
+    margin-bottom: 30px;
+}
+
+/* list nama */
+.team-list {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* bentuk panah */
+.team-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    color: white;
+    clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: right;
+    min-width: 250px;
+}
+
+.team-item:hover {
+    background: rgba(255, 255, 255, 0.4);
+}

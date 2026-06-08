@@ -1,0 +1,371 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #d1faff;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: white;
+
+    margin: 10px;
+    padding: 12px 20px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-box {
+    width: 110px;
+    height: 36px;
+
+    border-radius: 10px;
+    border: 1px solid black;
+
+    background: #e7e2cf;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+    border: 1px solid black;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon img {
+    width: 22px;
+}
+
+.search-wrapper {
+    width: 55%;
+
+    display: flex;
+    align-items: center;
+}
+
+.home-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+    border: 1px solid black;
+
+    background: #f1faff;
+
+    margin-right: 10px;
+
+    cursor: pointer;
+}
+
+.home-icon img {
+    width: 20px;
+}
+
+.search-bar {
+    flex: 1;
+
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+
+    border-radius: 25px;
+    border: 1px solid black;
+
+    background: #d9e0e5;
+
+    padding: 0 16px;
+}
+
+.search-icon {
+    width: 18px;
+    margin-right: 10px;
+}
+
+.search-bar input {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-size: 16px;
+}
+
+.btn-search {
+    margin-left: 12px;
+
+    width: 105px;
+    height: 45px;
+
+    border-radius: 25px;
+    border: 1px solid black;
+
+    background: #dff5da;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.right-header {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 10px;
+    border: 1px solid black;
+
+    background: #f7f3db;
+
+    cursor: pointer;
+}
+
+.icon-btn img {
+    width: 20px;
+}
+
+.logout {
+    background: #ffb5b6;
+}
+
+/* MAIN */
+
+.petugas-container {
+    padding: 18px 30px 30px;
+}
+
+/* TOP */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 22px;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    max-width: 700px;
+}
+
+.categories button {
+    height: 28px;
+
+    padding: 0 14px;
+
+    border-radius: 20px;
+    border: 1px solid #888;
+
+    background: #edf5f7;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.categories button.active {
+    background: white;
+}
+
+.btn-report {
+    height: 40px;
+
+    padding: 0 18px;
+
+    border-radius: 10px;
+    border: 1px solid black;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+}
+
+.btn-report img {
+    width: 15px;
+}
+
+/* STATS */
+
+.stats {
+    display: flex;
+    gap: 40px;
+
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    width: 182px;
+    height: 145px;
+
+    border-radius: 12px;
+    border: 1px solid #666;
+
+    background: #dbe7f0;
+
+    padding: 14px 18px;
+}
+
+.stat-card h4 {
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.stat-card h2 {
+    margin-top: 8px;
+
+    font-size: 72px;
+    font-weight: 300;
+}
+
+/* HEADER TABLE */
+
+.book-header {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 0.8fr 0.4fr 1.1fr;
+
+    gap: 1px;
+
+    margin-left: 38px;
+    margin-bottom: 8px;
+}
+
+.book-header div {
+    height: 20px;
+
+    border-radius: 8px;
+    border: 1px solid #888;
+
+    background: #ece8d3;
+}
+
+/* ROW */
+
+.book-row-wrapper {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 10px;
+}
+
+.row-number {
+    width: 25px;
+
+    font-size: 18px;
+}
+
+.book-row {
+    flex: 1;
+
+    background: #dbe7f0;
+
+    border-radius: 12px;
+    border: 1px solid #666;
+
+    padding: 18px;
+}
+
+.book-main {
+    display: grid;
+    grid-template-columns:
+        1.2fr
+        1fr
+        1fr
+        0.6fr
+        1.4fr
+        1.2fr;
+
+    align-items: center;
+}
+
+.book-title {
+    font-size: 18px;
+}
+
+.book-small {
+    font-size: 11px;
+}
+
+.book-status {
+    font-size: 12px;
+}
+
+/* PAGINATION */
+
+.bottom-bar {
+    margin-top: 24px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pagination button {
+    min-width: 38px;
+    height: 38px;
+
+    padding: 0 12px;
+
+    border-radius: 8px;
+    border: 1px solid #888;
+
+    background: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9fc7d2;
+    border-radius: 10px;
+}

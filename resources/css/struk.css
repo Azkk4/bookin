@@ -1,0 +1,167 @@
+/* =========================
+   RECEIPT MODAL
+========================= */
+
+.receipt-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    z-index: 3000;
+}
+
+.receipt-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* BOX */
+.receipt-modal {
+    position: relative;
+
+    width: 650px;
+
+    background: #dff4ff;
+
+    border-radius: 14px;
+
+    border: 1px solid #707070;
+
+    padding: 18px 24px 24px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* CLOSE */
+.close-receipt {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    background: transparent;
+    border: none;
+
+    cursor: pointer;
+}
+
+.close-receipt img {
+    width: 14px;
+    height: 14px;
+}
+
+/* TITLE */
+.receipt-modal h2 {
+    text-align: center;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    margin-bottom: 22px;
+}
+
+/* CONTENT */
+.receipt-content {
+    display: flex;
+
+    gap: 42px;
+}
+
+/* LEFT */
+.receipt-left {
+    width: 210px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    flex-shrink: 0;
+}
+
+.receipt-cover {
+    width: 180px;
+    height: 240px;
+
+    min-width: 180px;
+    min-height: 240px;
+
+    object-fit: cover;
+
+    display: block;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    border: 1px solid #707070;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+
+    margin-bottom: 16px;
+}
+
+/* STATUS */
+.receipt-status {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin: auto;
+}
+
+.receipt-status img {
+    width: 18px;
+    height: 18px;
+}
+
+.receipt-status span {
+    font-size: 14px;
+}
+
+/* RIGHT */
+.receipt-right {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+/* ROW */
+.receipt-row {
+    display: grid;
+
+    grid-template-columns: 170px 20px 1fr;
+
+    align-items: center;
+
+    font-size: 14px;
+}
+
+.receipt-row p {
+    color: #444;
+}
+
+.receipt-row h5 {
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #333;
+}
+
+.success-text {
+    color: #2d8b57;
+}

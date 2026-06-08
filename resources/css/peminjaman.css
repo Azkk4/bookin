@@ -1,0 +1,244 @@
+/* ============= */
+/* Peminjaman */
+/* ============= */
+/* OVERLAY */
+.borrow-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    z-index: 2000;
+}
+
+.borrow-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MODAL */
+.borrow-modal {
+    position: relative;
+    width: 720px;
+
+    background: #dff4ff;
+
+    border-radius: 14px;
+
+    border: 1px solid #707070;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    overflow: visible;
+}
+
+/* TOP */
+.borrow-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* HEADER */
+.borrow-header {
+    width: 280px;
+    height: 56px;
+
+    background: #ccedff;
+
+    border-right: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+
+    border-radius: 14px 0 14px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    position: relative;
+    z-index: 5;
+}
+
+.borrow-header h3 {
+    margin: auto;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.close-borrow {
+    width: 40px;
+    height: 40px;
+
+    background: transparent;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    margin-top: 6px;
+    margin-right: 8px;
+}
+
+.close-borrow img {
+    width: 14px;
+    height: 14px;
+
+    object-fit: contain;
+}
+
+/* CONTENT */
+.borrow-content {
+    display: flex;
+
+    gap: 30px;
+
+    padding: 22px;
+    padding-bottom: 55px;
+}
+
+/* LEFT */
+.borrow-left {
+    width: 200px;
+    margin-left: 55px;
+}
+
+.borrow-left h2 {
+    font-size: 22px;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.borrow-cover {
+    width: 150px;
+    height: 220px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+    border: 1px solid #707070;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* RIGHT */
+.borrow-right {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    margin-top: 9px;
+    margin-left: 0;
+    margin-right: 6px;
+
+    gap: 18px;
+}
+
+/* FORM */
+.borrow-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+.borrow-group label {
+    font-size: 13px;
+    color: #555;
+}
+
+/* INPUT */
+.borrow-group input,
+.borrow-group select {
+    width: 100%;
+    height: 46px;
+
+    border-radius: 10px;
+
+    border: 1px solid #707070;
+
+    background: #ffffff;
+
+    padding: 0 45px 0 14px;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    appearance: none;
+}
+
+/* ICON */
+.input-icon {
+    position: relative;
+}
+
+.input-icon img {
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 10px;
+
+    pointer-events: none;
+}
+
+/* BUTTON */
+.btn-confirm-borrow {
+    position: absolute;
+
+    bottom: -22px;
+    right: 28px;
+
+    width: 140px;
+    height: 46px;
+
+    border-radius: 25px;
+
+    border: 1px solid #707070;
+
+    background: #baffbf;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Kalender */
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+
+    position: absolute;
+
+    right: 0;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+}

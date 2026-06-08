@@ -1,0 +1,362 @@
+/* =========================================
+   OVERLAY
+========================================= */
+
+.pengembalian-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    z-index: 4000;
+}
+
+.pengembalian-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   MODAL
+========================================= */
+
+.pengembalian-modal {
+    position: relative;
+
+    width: 760px;
+    min-height: 420px;
+    max-height: 85vh;
+
+    background: #dff4ff;
+
+    border-radius: 14px;
+
+    border: 1px solid #707070;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================
+   TOP
+========================================= */
+
+.pengembalian-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.pengembalian-header {
+    width: 260px;
+    height: 56px;
+
+    background: #ccedff;
+
+    border-right: 1px solid #707070;
+    border-bottom: 1px solid #707070;
+
+    border-radius: 14px 0 14px 0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+}
+
+.pengembalian-header h3 {
+    font-size: 20px;
+    font-weight: 500;
+
+    margin: auto;
+
+    color: black;
+}
+
+/* =========================================
+   CLOSE
+========================================= */
+
+.close-pengembalian {
+    width: 40px;
+    height: 40px;
+
+    background: transparent;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    margin-top: 6px;
+    margin-right: 8px;
+}
+
+.close-pengembalian img {
+    width: 14px;
+    height: 14px;
+
+    object-fit: contain;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.pengembalian-content {
+    padding: 24px 18px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    overflow-y: auto;
+
+    max-height: calc(85vh - 70px);
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.pengembalian-card {
+    background: #dff4ff;
+
+    border: 1px solid #707070;
+
+    border-radius: 14px;
+
+    padding: 16px;
+
+    display: flex;
+    gap: 20px;
+
+    align-items: flex-start;
+
+    transition: 0.2s ease;
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.pengembalian-card:hover {
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   LEFT
+========================================= */
+
+.pengembalian-left {
+    width: 130px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pengembalian-cover {
+    width: 130px;
+    height: 180px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+    border: 1px solid #707070;
+
+    margin-bottom: 12px;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.btn-kembalikan {
+    width: 100%;
+    height: 38px;
+
+    border-radius: 10px;
+    border: 1px solid #707070;
+
+    background: #b9ffb7;
+    margin-top: 11px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.btn-kembalikan:hover {
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   RIGHT
+========================================= */
+
+.pengembalian-center {
+    flex: 1;
+}
+
+.judul-buku {
+    font-size: 22px;
+    font-weight: 500;
+
+    color: #3a3a3a;
+
+    margin-bottom: 18px;
+
+    line-height: 1.3;
+}
+
+/* DETAIL */
+
+.detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detail-row {
+    display: flex;
+
+    font-size: 14px;
+
+    color: #444;
+}
+
+.detail-label {
+    width: 150px;
+
+    flex-shrink: 0;
+
+    font-weight: 500;
+}
+
+.detail-separator {
+    width: 15px;
+
+    flex-shrink: 0;
+}
+
+.detail-value {
+    flex: 1;
+}
+
+/* =========================================
+   STATUS
+========================================= */
+/* =========================================
+   STATUS WRAPPER
+========================================= */
+
+.pengembalian-status-wrapper {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 14px;
+}
+
+/* =========================================
+   STATUS BADGE
+========================================= */
+
+.status-pinjam {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 10px;
+
+    padding: 9px 18px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    border: 1px solid transparent;
+
+    letter-spacing: 0.3px;
+}
+
+/* DOT */
+.status-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+}
+
+/* =========================
+   SEDANG DIPINJAM
+========================= */
+
+.status-pinjam.dipinjam {
+    background: #dff5da;
+
+    border-color: #9fd39f;
+
+    color: #246b24;
+}
+
+.status-pinjam.dipinjam .status-dot {
+    background: #37a937;
+}
+
+/* =========================
+   TELAT
+========================= */
+
+.status-pinjam.telat {
+    background: #ffe0e0;
+
+    border-color: #ffb3b3;
+
+    color: #b42323;
+}
+
+.status-pinjam.telat .status-dot {
+    background: #ff4b4b;
+}
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty-pengembalian {
+    width: 100%;
+    min-height: 280px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: #666;
+
+    font-size: 16px;
+    font-weight: 500;
+}

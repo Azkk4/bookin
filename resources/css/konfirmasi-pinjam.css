@@ -1,0 +1,112 @@
+/* =========================================
+   KONFIRMASI PINJAM
+========================================= */
+
+/* overlay */
+.confirm-borrow-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2500;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.3s ease;
+}
+
+/* aktif */
+.confirm-borrow-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* box */
+.confirm-borrow-modal {
+    width: min(520px, calc(100% - 40px));
+    min-height: 160px;
+
+    background: #dbeef5;
+
+    border-radius: 18px;
+
+    border: 1px solid black;
+
+    padding: 24px 30px 55px;
+
+    position: relative;
+
+    transform: translateY(30px);
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* animasi */
+.confirm-borrow-overlay.active .confirm-borrow-modal {
+    transform: translateY(0);
+}
+
+/* title */
+.confirm-borrow-modal h2 {
+    font-size: 22px;
+    font-weight: 500;
+
+    color: #343434;
+
+    line-height: 1.4;
+}
+
+/* tombol */
+.confirm-borrow-actions {
+    position: absolute;
+
+    bottom: -23px;
+    right: 24px;
+
+    display: flex;
+    gap: 14px;
+}
+
+/* umum */
+.btn-cancel-borrow,
+.btn-confirm-borrow-action {
+    width: 120px;
+    height: 46px;
+
+    border-radius: 30px;
+
+    border: 1px solid black;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* batal */
+.btn-cancel-borrow {
+    background: #f5f5f5;
+}
+
+/* pinjam */
+.btn-confirm-borrow-action {
+    background: #baffbf;
+}
+
+/* hover */
+.btn-cancel-borrow:hover,
+.btn-confirm-borrow-action:hover {
+    transform: translateY(-2px);
+}
