@@ -10,6 +10,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    if (!Auth::check()) {
+        return redirect()->route('landing');
+    }
+
+    $user = Auth::user();
+
+    return match ($user->Role) {
+        'Admin'    => redirect()->route('admin.dashboard'),
+        'Petugas'  => redirect()->route('petugas.dashboard'),
+        'Peminjam' => redirect()->route('dashboard'),
+        default    => redirect()->route('landing'),
+    };
 });
 
 Route::get('/landing', function () {
