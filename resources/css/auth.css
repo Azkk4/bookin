@@ -182,10 +182,83 @@ body {
     cursor: pointer;
 }
 
-.remember-label input {
-    width: 15px;
-    height: 15px;
+.remember-group {
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
     cursor: pointer;
+    user-select: none;
+}
+
+.remember-checkbox {
+    display: none;
+}
+
+.remember-custom {
+    width: 20px;
+    height: 20px;
+
+    border-radius: 6px;
+
+    border: 2px solid rgba(255, 255, 255, 0.6);
+
+    background: rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(8px);
+
+    transition: all 0.25s ease;
+
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+.remember-custom::after {
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    top: 1px;
+
+    width: 5px;
+    height: 10px;
+
+    border: solid white;
+    border-width: 0 2px 2px 0;
+
+    transform: rotate(45deg) scale(0);
+
+    transition: all 0.2s ease;
+}
+
+.remember-checkbox:checked + .remember-custom {
+    background: #7ad4ff;
+
+    border-color: #7ad4ff;
+
+    box-shadow:
+        0 0 10px rgba(122, 212, 255, 0.6),
+        0 0 20px rgba(122, 212, 255, 0.3);
+}
+
+.remember-checkbox:checked + .remember-custom::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.remember-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.remember-label:hover .remember-custom {
+    border-color: #7ad4ff;
 }
 
 /* SCROLLBAR GLOBAL */

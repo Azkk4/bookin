@@ -13,7 +13,7 @@
   <body>
     <!-- NAVBAR -->
     <header class="navbar">
-      <div class="logo">Book'In</div>
+      <div class="logo">BookIn'</div>
       <nav>
         <a href="#">Home</a>
         <a href="#features">Features</a>

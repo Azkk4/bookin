@@ -73,9 +73,14 @@
                     <input
                         type="checkbox"
                         name="remember"
+                        class="remember-checkbox"
                     >
 
-                    <span>Ingatkan Saya</span>
+                    <span class="remember-custom"></span>
+
+                    <span class="remember-text">
+                        Ingatkan Saya
+                    </span>
 
                 </label>
 
