@@ -35,6 +35,10 @@
     <div class="left-header">
 
         <div class="logo-box">
+            {{ auth()->check()
+                    ? auth()->user()->Username
+                    : 'Guest'
+                }}
         </div>
 
         <div class="logo-icon">
@@ -274,6 +278,13 @@
         </div>
 
     @endforeach
+
+    <!-- Empty Search -->
+     <div class="empty-search" id="emptyUserSearch">
+    <img src="{{ asset('Flaticon/search.png') }}" alt="">
+    <h3>User tidak ditemukan</h3>
+    <p>Coba gunakan kata kunci yang berbeda.</p>
+</div>
 
     <!-- FOOTER -->
     <div class="bottom-bar">

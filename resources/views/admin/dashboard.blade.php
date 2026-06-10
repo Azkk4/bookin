@@ -34,7 +34,12 @@
     <header class="header">
 
         <div class="left-header">
-            <div class="logo-box"></div>
+            <div class="logo-box">
+                {{ auth()->check()
+                    ? auth()->user()->Username
+                    : 'Guest'
+                }}
+            </div>
 
             <div class="logo-icon">
                 <img src="{{ asset('images/Trinity Logo Cropped.png') }}">
@@ -48,19 +53,41 @@
                 <img src="{{ asset('Flaticon/home.png') }}">
             </a>
 
-    <div class="search-bar">
-        <img src="{{ asset('Flaticon/search.png') }}" class="search-icon">
+    <form method="GET" action="{{ route('admin.dashboard') }}">
+    
+        <div class="search-bar-wrapper">
 
-        <input
-            type="text"
-            name="search"
-            value="{{ request('search') }}"
-            placeholder="ada buku yang ingin dicari?"
-        >
-    </div>
-    <button class="btn-search" type="submit">Cari</button>
+            <div class="search-bar">
 
-</form>
+                <img
+                    src="{{ asset('Flaticon/search.png') }}"
+                    class="search-icon"
+                >
+
+                <input
+                    type="text"
+                    id="bookSearchInput"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Ada buku yang ingin dicari?"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div
+                class="search-suggestions"
+                id="bookSearchSuggestions"
+            ></div>
+
+        </div>
+
+        <button type="submit" class="btn-search">
+            Cari
+        </button>
+
+    </form>
+
 
 
         </div>

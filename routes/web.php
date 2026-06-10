@@ -127,6 +127,10 @@ Route::prefix('admin')
         | BUKU
         |--------------------------------------------------------------------------
         */
+        Route::get(
+            '/dashboard/suggestions',
+            [AdminController::class, 'bookSuggestions']
+        )->name('admin.dashboard.suggestions');
 
         Route::post('/books', [AdminController::class, 'store']);
 

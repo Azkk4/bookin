@@ -66,6 +66,21 @@
                 </div>
             @endif
 
+            <div class="remember-group">
+
+                <label class="remember-label">
+
+                    <input
+                        type="checkbox"
+                        name="remember"
+                    >
+
+                    <span>Ingatkan Saya</span>
+
+                </label>
+
+            </div>
+
             <button class="auth-btn" type="submit">
                 Login
             </button>

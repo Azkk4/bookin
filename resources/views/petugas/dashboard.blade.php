@@ -31,7 +31,12 @@
 
     <div class="left-header">
 
-        <div class="logo-box"></div>
+        <div class="logo-box">
+            {{ auth()->check()
+                    ? auth()->user()->Username
+                    : 'Guest'
+                }}
+        </div>
 
         <div class="logo-icon">
             <img src="{{ asset('images/gehenna_logo_cropped.png') }}">

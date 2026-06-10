@@ -9,6 +9,70 @@ body {
     background: #d1faff;
 }
 
+/* =====================================
+   GLOBAL BUTTON HOVER
+===================================== */
+
+button,
+.btn-books,
+.home-icon,
+.icon-btn,
+.btn-users-top,
+.btn-users {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+}
+
+button:not(:disabled):hover,
+.btn-books:hover,
+.home-icon:hover,
+.icon-btn:hover,
+.btn-users-top:hover,
+.btn-users:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    filter: brightness(1.02);
+}
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =====================================
+   EXCLUDED BUTTONS
+===================================== */
+
+.categories button:hover,
+.btn-back:hover,
+.upload-cover-box:hover,
+.search-suggestions .suggestion-item:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+/* kategori tetap pakai efek sendiri */
+
+.categories button:hover {
+    transform: translateY(-1px) !important;
+}
+
+/* upload cover */
+
+.upload-cover-box {
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.upload-cover-box:hover {
+    border-color: #4dafff;
+    background: #dff1ff;
+}
+
 /* HEADER */
 .header {
     display: flex;
@@ -30,9 +94,26 @@ body {
 .logo-box {
     width: 180px;
     height: 45px;
-    background: #e6e2cf;
+
+    background: #f1faff;
+
     border-radius: 10px;
     border: 1px solid black;
+
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
+    padding: 0 12px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    color: black;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .logo-icon {
@@ -82,6 +163,11 @@ body {
     display: block;
 }
 
+.search-bar-wrapper {
+    position: relative;
+    flex: 1;
+}
+
 .search-bar {
     flex: 1;
     display: flex;
@@ -115,6 +201,80 @@ body {
     background: #dff5da;
     cursor: pointer;
     font-size: 16px;
+}
+
+.suggestion-cover {
+    width: 38px;
+    height: 52px;
+
+    overflow: hidden;
+
+    border-radius: 6px;
+
+    border: 1px solid #ccc;
+
+    flex-shrink: 0;
+}
+
+.suggestion-cover img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.suggestion-author {
+    font-size: 11px;
+    color: #777;
+}
+
+.search-suggestions {
+    position: absolute;
+
+    top: 55px;
+    left: 0;
+    right: 0;
+
+    background: white;
+
+    border: 1px solid black;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    display: none;
+
+    z-index: 999;
+}
+
+.search-suggestions.active {
+    display: block;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+.suggestion-item:hover {
+    background: #eef8ff;
+}
+
+.suggestion-info {
+    flex: 1;
+}
+
+.suggestion-name {
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .right-header {
@@ -385,13 +545,9 @@ body {
     cursor: pointer;
     margin-bottom: 20px;
     gap: 20px;
-    transition: 0.2s ease;
-}
-
-.book-row:hover {
-    transform: translateY(-2px);
-
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.18s ease;
 }
 
 .book-title {

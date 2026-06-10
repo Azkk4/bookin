@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("userSearchInput");
+    const emptySearch = document.getElementById("emptyUserSearch");
 
     const suggestionBox = document.getElementById("searchSuggestions");
 
@@ -70,30 +71,61 @@ document.addEventListener("DOMContentLoaded", () => {
     searchInput.addEventListener("input", () => {
         clearTimeout(debounce);
 
-        const keyword = searchInput.value.trim();
+        const keyword = searchInput.value.trim().toLowerCase();
 
-        if (keyword.length < 2) {
+        // Jika kosong
+        if (keyword.length === 0) {
             suggestionBox.classList.remove("active");
-
             suggestionBox.innerHTML = "";
 
-            return;
+            userRows.forEach((row) => {
+                row.style.display = "flex";
+            });
+
+            emptySearch.classList.remove("active");
+
             updateRowNumbers();
+
+            return;
         }
 
-        debounce = setTimeout(async () => {
-            try {
-                const response = await fetch(
-                    `/admin/users/suggestions?q=${keyword}`,
-                );
+        // Suggestion AJAX
+        if (keyword.length >= 2) {
+            debounce = setTimeout(async () => {
+                try {
+                    const response = await fetch(
+                        `/admin/users/suggestions?q=${keyword}`,
+                    );
 
-                const users = await response.json();
+                    const users = await response.json();
 
-                renderSuggestions(users);
-            } catch (err) {
-                console.error(err);
+                    renderSuggestions(users);
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 250);
+        }
+
+        let visibleCount = 0;
+
+        userRows.forEach((row) => {
+            const text = row.textContent.toLowerCase();
+
+            if (text.includes(keyword)) {
+                row.style.display = "flex";
+                visibleCount++;
+            } else {
+                row.style.display = "none";
             }
-        }, 250);
+        });
+
+        if (visibleCount === 0) {
+            emptySearch.classList.add("active");
+        } else {
+            emptySearch.classList.remove("active");
+        }
+
+        updateRowNumbers();
     });
 
     suggestionBox.addEventListener("click", (e) => {

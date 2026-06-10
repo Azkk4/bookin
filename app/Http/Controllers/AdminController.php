@@ -161,6 +161,28 @@ class AdminController extends Controller
         );
     }
 
+    public function bookSuggestions(Request $request)
+    {
+        $search = $request->q;
+
+        if (!$search) {
+            return response()->json([]);
+        }
+
+        $books = Buku::where('Judul', 'like', "%{$search}%")
+            ->orWhere('Penulis', 'like', "%{$search}%")
+            ->orWhere('Penerbit', 'like', "%{$search}%")
+            ->limit(6)
+            ->get([
+                'BukuID',
+                'Judul',
+                'Penulis',
+                'Cover'
+            ]);
+
+        return response()->json($books);
+    }
+
     public function userSuggestions(Request $request)
     {
         $search = $request->q;

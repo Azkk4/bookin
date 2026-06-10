@@ -131,10 +131,96 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteModal = document.getElementById("deleteBookModal");
     const cancelDelete = document.getElementById("cancelDeleteBook");
     const confirmDelete = document.getElementById("confirmDeleteBook");
+    const searchInput = document.getElementById("bookSearchInput");
+
+    const suggestionBox = document.getElementById("bookSearchSuggestions");
 
     let selectedRow = null;
     let selectedBookId = null;
     let activeRow = null;
+
+    if (searchInput && suggestionBox) {
+        let debounce;
+
+        searchInput.addEventListener("input", () => {
+            clearTimeout(debounce);
+
+            const keyword = searchInput.value.trim();
+
+            if (!keyword) {
+                suggestionBox.innerHTML = "";
+                suggestionBox.classList.remove("active");
+                return;
+            }
+
+            debounce = setTimeout(async () => {
+                try {
+                    const response = await fetch(
+                        `/admin/dashboard/suggestions?q=${keyword}`,
+                    );
+
+                    const books = await response.json();
+
+                    if (!books.length) {
+                        suggestionBox.innerHTML = "";
+                        suggestionBox.classList.remove("active");
+                        return;
+                    }
+
+                    suggestionBox.innerHTML = books
+                        .map(
+                            (book) => `
+                    <div
+                        class="suggestion-item"
+                        data-title="${book.Judul}"
+                    >
+                        <div class="suggestion-cover">
+                            <img
+                                src="/storage/books/${book.Cover}"
+                                alt="${book.Judul}"
+                            >
+                        </div>
+
+                        <div class="suggestion-info">
+                            <div class="suggestion-name">
+                                ${book.Judul}
+                            </div>
+
+                            <div class="suggestion-author">
+                                ${book.Penulis}
+                            </div>
+                        </div>
+                    </div>
+                `,
+                        )
+                        .join("");
+
+                    suggestionBox.classList.add("active");
+                } catch (error) {
+                    console.error(error);
+                }
+            }, 250);
+        });
+
+        suggestionBox.addEventListener("click", (e) => {
+            const item = e.target.closest(".suggestion-item");
+
+            if (!item) return;
+
+            searchInput.value = item.dataset.title;
+
+            suggestionBox.classList.remove("active");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (
+                !searchInput.contains(e.target) &&
+                !suggestionBox.contains(e.target)
+            ) {
+                suggestionBox.classList.remove("active");
+            }
+        });
+    }
 
     /* =========================
        RENDER
@@ -410,8 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const searchButton = document.querySelector(".btn-search");
 
-    const searchInput = document.querySelector(".search-bar input");
-
     const categoryButtons = document.querySelectorAll(".categories button");
 
     const rows = document.querySelectorAll(".book-row-wrapper");
@@ -459,10 +543,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =========================
    SEARCH INPUT
 ========================= */
-
-    if (searchInput) {
-        searchInput.addEventListener("input", filterBooks);
-    }
 
     if (searchButton) {
         searchButton.addEventListener("click", (e) => {
