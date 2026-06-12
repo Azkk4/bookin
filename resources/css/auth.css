@@ -1,6 +1,6 @@
 @font-face {
     font-family: "HYWenHei";
-    src: url("/fonts/zhcn.ttf") format("truetype");
+    src: url("/public/fonts/zhcn.ttf");
     font-weight: normal;
     font-style: normal;
 }

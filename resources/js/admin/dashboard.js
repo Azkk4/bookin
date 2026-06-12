@@ -44,9 +44,6 @@ function createBookRow(data, index = 0) {
     0
 </div>
 
-            <div class="book-cover-thumb">
-                <img src="${data.CoverUrl}">
-            </div>
         </div>
     </div>`;
 }

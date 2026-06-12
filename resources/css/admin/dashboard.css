@@ -550,6 +550,16 @@ button:disabled {
         box-shadow 0.18s ease;
 }
 
+.book-row:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.12),
+        0 0 0 2px rgba(122, 212, 255, 0.35);
+
+    background: #f2fbff;
+}
+
 .book-title {
     font-size: 18px;
     font-weight: 600;

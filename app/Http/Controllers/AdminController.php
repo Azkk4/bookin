@@ -403,17 +403,33 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'Judul' => 'required',
-            'Penulis' => 'required',
-            'Penerbit' => 'required',
-            'TahunTerbit' => 'required',
-            'Deskripsi' => 'required',
-            'Stok' => 'required|integer|min:1',
-            'KategoriID' => 'required|array|min:1',
-            'KategoriID.*' => 'exists:kategoribuku,KategoriID',
-            'Cover' => 'required|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        $request->validate(
+            [
+                'Judul' => 'required',
+                'Penulis' => 'required',
+                'Penerbit' => 'required',
+                'TahunTerbit' => 'required',
+                'Deskripsi' => 'required',
+                'Stok' => 'required|integer|min:1',
+                'KategoriID' => 'required|array|min:1',
+                'KategoriID.*' => 'exists:kategoribuku,KategoriID',
+                'Cover' => 'required|file|mimes:jpg,jpeg,png,webp,avif|max:2048'
+            ],
+            [
+                'Judul.required' => 'Judul buku wajib diisi.',
+                'Penulis.required' => 'Penulis wajib diisi.',
+                'Penerbit.required' => 'Penerbit wajib diisi.',
+                'TahunTerbit.required' => 'Tahun terbit wajib diisi.',
+                'Deskripsi.required' => 'Deskripsi wajib diisi.',
+                'Stok.required' => 'Stok wajib diisi.',
+                'Stok.integer' => 'Stok harus berupa angka.',
+                'Stok.min' => 'Stok minimal 1.',
+                'KategoriID.required' => 'Pilih minimal satu kategori.',
+                'Cover.required' => 'Cover buku wajib diunggah.',
+                'Cover.mimes' => 'Cover harus berformat JPG, PNG, WEBP, atau AVIF.',
+                'Cover.max' => 'Ukuran cover maksimal 2 MB.'
+            ]
+        );
 
         // upload cover
         $coverName =
@@ -455,9 +471,21 @@ class AdminController extends Controller
             '"'
         );
 
+        $buku->load('kategoriRelasi.kategori');
+
         return response()->json([
             'success' => true,
-            'message' => 'Buku berhasil ditambahkan'
+            'message' => 'Buku berhasil ditambahkan',
+            'data' => [
+                'BukuID' => $buku->BukuID,
+                'Judul' => $buku->Judul,
+                'Penulis' => $buku->Penulis,
+                'Penerbit' => $buku->Penerbit,
+                'TahunTerbit' => $buku->TahunTerbit,
+                'Deskripsi' => $buku->Deskripsi,
+                'Stok' => $buku->Stok,
+                'Cover' => $buku->Cover,
+            ]
         ]);
     }
 
