@@ -794,6 +794,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         uploadText.style.display = "block";
                         coverInput.value = "";
                     }
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1200);
                 } else {
                     showCollectionToast(
                         result.message || "Gagal menambahkan buku",
