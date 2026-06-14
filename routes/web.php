@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -148,6 +149,16 @@ Route::prefix('admin')
         Route::post('/books', [AdminController::class, 'store']);
 
         Route::delete('/books/{id}', [AdminController::class, 'destroy']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | KELOLA KATEGORI
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/kategori', [KategoriController::class, 'index']);
+        Route::post('/kategori', [KategoriController::class, 'store']);
+        Route::put('/kategori/{id}', [KategoriController::class, 'update']);
+        Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
 
         /*
         |--------------------------------------------------------------------------

@@ -52,6 +52,9 @@ function createBookRow(data, index = 0) {
 // RATING DAN ULASAN
 // =================
 function renderRatingSummary(data) {
+    if (!data) {
+        return;
+    }
     const avgEl = document.getElementById("avgRating");
 
     const dist = data.rating_distribution;
@@ -130,11 +133,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmDelete = document.getElementById("confirmDeleteBook");
     const searchInput = document.getElementById("bookSearchInput");
 
+    const actionModal = document.getElementById("actionConfirmModal");
+    const actionText = document.getElementById("actionConfirmText");
+    const confirmActionBtn = document.getElementById("confirmActionBtn");
+    const cancelActionBtn = document.getElementById("cancelActionConfirm");
+
+    let actionCallback = null;
+
     const suggestionBox = document.getElementById("bookSearchSuggestions");
 
     let selectedRow = null;
     let selectedBookId = null;
     let activeRow = null;
+    let categorySort = "popular";
+
+    function openActionModal(message, mode = "disable", callback = null) {
+        actionText.innerText = message;
+
+        confirmActionBtn.classList.remove(
+            "save-mode",
+            "discard-mode",
+            "disable-mode",
+            "login-mode",
+        );
+
+        confirmActionBtn.classList.add(`${mode}-mode`);
+
+        actionCallback = callback;
+
+        actionModal.classList.add("active");
+    }
+
+    function closeActionModal() {
+        actionModal.classList.remove("active");
+        actionCallback = null;
+    }
+
+    cancelActionBtn.addEventListener("click", closeActionModal);
+
+    confirmActionBtn.addEventListener("click", () => {
+        if (actionCallback) {
+            actionCallback();
+        }
+
+        closeActionModal();
+    });
 
     if (searchInput && suggestionBox) {
         let debounce;
@@ -495,8 +538,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const categoryButtons = document.querySelectorAll(".categories button");
 
-    const rows = document.querySelectorAll(".book-row-wrapper");
-
     const emptySearch = document.getElementById("emptySearch");
 
     let activeCategories = ["Semua"];
@@ -817,4 +858,357 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // ====================
+    // KELOLA KATEGORI
+    // ====================
+
+    const categoryModal = document.getElementById("categoryModal");
+
+    const openCategoryManager = document.getElementById("openCategoryManager");
+
+    const closeCategoryModal = document.getElementById("closeCategoryModal");
+
+    if (openCategoryManager) {
+        openCategoryManager.addEventListener("click", () => {
+            categoryModal.classList.add("active");
+
+            loadCategories();
+        });
+    }
+
+    if (closeCategoryModal) {
+        closeCategoryModal.addEventListener("click", () => {
+            categoryModal.classList.remove("active");
+            window.location.reload();
+        });
+    }
+
+    async function loadCategories() {
+        try {
+            const response = await fetch(
+                `/admin/kategori?sort=${categorySort}`,
+            );
+
+            const categories = await response.json();
+
+            renderCategories(categories);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function renderCategories(categories) {
+        const container = document.getElementById("categoryListContainer");
+
+        container.innerHTML = "";
+
+        categories.forEach((category) => {
+            const isUsed = category.kategori_relasi_count > 0;
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                `
+            <div
+                class="category-item"
+                data-id="${category.KategoriID}"
+            >
+
+                <div class="category-info">
+
+                    <div class="category-name">
+                        ${category.NamaKategori}
+                    </div>
+
+                    <div class="category-count">
+                        ${category.kategori_relasi_count} buku menggunakan kategori ini
+                    </div>
+
+                    ${
+                        isUsed
+                            ? `
+                        <div class="category-note">
+                            Kategori tidak dapat dihapus karena masih digunakan buku.
+                        </div>
+                        `
+                            : `
+                        <div class="category-note category-note-success">
+                            Kategori dapat dihapus dengan aman.
+                        </div>
+                        `
+                    }
+
+                </div>
+
+                <div class="category-actions">
+
+                    <button class="edit-category">
+                        Edit
+                    </button>
+
+                    <button
+                        class="delete-category ${isUsed ? "disabled" : ""}"
+                        ${isUsed ? "disabled" : ""}
+                    >
+                        Hapus
+                    </button>
+
+                </div>
+
+            </div>
+            `,
+            );
+        });
+    }
+
+    const categorySortSelect = document.getElementById("categorySort");
+
+    if (categorySortSelect) {
+        categorySortSelect.addEventListener("change", () => {
+            categorySort = categorySortSelect.value;
+
+            loadCategories();
+        });
+    }
+
+    const saveCategoryBtn = document.getElementById("saveCategoryBtn");
+
+    if (saveCategoryBtn) {
+        saveCategoryBtn.addEventListener("click", async () => {
+            const nama = document
+                .getElementById("newCategoryName")
+                .value.trim();
+
+            if (!nama) return;
+
+            try {
+                openActionModal(
+                    `Tambahkan kategori "${nama}"?`,
+                    "save",
+                    async () => {
+                        try {
+                            saveCategoryBtn.disabled = true;
+
+                            const response = await fetch("/admin/kategori", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector(
+                                        'meta[name="csrf-token"]',
+                                    ).content,
+                                },
+                                body: JSON.stringify({
+                                    NamaKategori: nama,
+                                }),
+                            });
+
+                            const result = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    result.message ||
+                                        result.errors?.NamaKategori?.[0] ||
+                                        "Terjadi kesalahan",
+                                );
+                            }
+
+                            document.getElementById("newCategoryName").value =
+                                "";
+
+                            loadCategories();
+
+                            showCollectionToast(
+                                "Kategori berhasil ditambahkan",
+                                "success",
+                            );
+                        } catch (error) {
+                            showCollectionToast(error.message, "error");
+                        } finally {
+                            saveCategoryBtn.disabled = false;
+                        }
+                    },
+                );
+
+                return;
+            } catch (error) {
+                console.error(error);
+
+                showCollectionToast(
+                    error.message || "Terjadi kesalahan",
+                    "error",
+                );
+            }
+        });
+    }
+
+    document.addEventListener("click", async (e) => {
+        const deleteBtn = e.target.closest(".delete-category");
+
+        if (!deleteBtn) return;
+
+        if (deleteBtn.disabled) {
+            return;
+        }
+
+        const item = deleteBtn.closest(".category-item");
+
+        const id = item.dataset.id;
+
+        try {
+            const categoryName = item.querySelector(".category-name").innerText;
+
+            openActionModal(
+                `Yakin ingin menghapus kategori "${categoryName}"?`,
+                "disable",
+                async () => {
+                    try {
+                        const response = await fetch(`/admin/kategori/${id}`, {
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRF-TOKEN": document.querySelector(
+                                    'meta[name="csrf-token"]',
+                                ).content,
+                            },
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            loadCategories();
+
+                            showCollectionToast(
+                                "Kategori berhasil dihapus",
+                                "success",
+                            );
+                        } else {
+                            showCollectionToast(result.message, "error");
+                        }
+                    } catch (error) {
+                        console.error(error);
+
+                        showCollectionToast(
+                            error.message || "Terjadi kesalahan",
+                            "error",
+                        );
+                    }
+                },
+            );
+        } catch (error) {
+            console.error(error);
+
+            showCollectionToast(error.message || "Terjadi kesalahan", "error");
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".edit-category");
+
+        if (!btn) return;
+
+        const item = btn.closest(".category-item");
+
+        const nameBox = item.querySelector(".category-name");
+
+        const currentName = nameBox.innerText;
+
+        nameBox.innerHTML = `
+<input
+    type="text"
+    class="category-edit-input"
+>
+`;
+
+        nameBox.querySelector("input").value = currentName;
+
+        item.querySelector(".category-actions").innerHTML = `
+        <button class="save-category">
+            Simpan
+        </button>
+
+        <button class="cancel-category">
+            Batal
+        </button>
+    `;
+    });
+
+    document.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".save-category");
+
+        if (!btn) return;
+
+        const item = btn.closest(".category-item");
+
+        const id = item.dataset.id;
+
+        const input = item.querySelector(".category-edit-input");
+
+        const newName = input.value.trim();
+
+        if (!newName) return;
+
+        try {
+            openActionModal(
+                `Simpan perubahan kategori menjadi "${newName}"?`,
+                "save",
+                async () => {
+                    try {
+                        const response = await fetch(`/admin/kategori/${id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector(
+                                    'meta[name="csrf-token"]',
+                                ).content,
+                            },
+                            body: JSON.stringify({
+                                NamaKategori: newName,
+                            }),
+                        });
+
+                        const result = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(
+                                result.message ||
+                                    result.errors?.NamaKategori?.[0] ||
+                                    "Terjadi kesalahan",
+                            );
+                        }
+
+                        if (result.success) {
+                            loadCategories();
+
+                            showCollectionToast(
+                                "Kategori berhasil diperbarui",
+                                "success",
+                            );
+                        } else {
+                            showCollectionToast(result.message, "error");
+                        }
+                    } catch (error) {
+                        console.error(error);
+
+                        showCollectionToast(
+                            error.message || "Terjadi kesalahan",
+                            "error",
+                        );
+                    }
+                },
+            );
+
+            return;
+        } catch (error) {
+            console.error(error);
+
+            showCollectionToast(error.message || "Terjadi kesalahan", "error");
+        }
+    });
+
+    document.addEventListener("click", (e) => {
+        const btn = e.target.closest(".cancel-category");
+
+        if (!btn) return;
+
+        loadCategories();
+    });
 });

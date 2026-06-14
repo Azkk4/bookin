@@ -12,6 +12,7 @@
       'resources/css/admin/hapus-buku.css',
       'resources/css/admin/generate-laporan.css',
       'resources/css/admin/preview-laporan.css',
+      'resources/css/admin/kelola-kategori.css',
 
       'resources/css/logout.css',
 
@@ -29,6 +30,8 @@
   @include('components.modals.hapus-buku')
   @include('components.modals.generate-laporan')
   @include('components.modals.preview-laporan')
+  @include('components.modals.kelola-kategori')
+  @include('components.modals.action-confirm')
 
     {{-- HEADER --}}
     <header class="header">
@@ -143,6 +146,14 @@
                   <img src="{{ asset('Flaticon/plus.png') }}">
                   <span>Buku</span>
               </button>
+
+              <button class="btn-category" id="openCategoryManager">
+
+                    <img src="{{ asset('Flaticon/compose.png') }}">
+
+                    <span>Kategori</span>
+
+                </button>
 
               <a href="{{ url('/admin/users') }}" class="btn-users-top">
                   <img src="{{ asset('Flaticon/team.png') }}">
@@ -404,7 +415,17 @@ data-rating-summary='@json([
             <div class="detail-field">
                 <label>Kategori</label>
                 <span class="view-value" id="vKategori"></span>
-                <input class="edit-input" id="eKategori">
+                <select
+                    id="eKategori"
+                    class="edit-input"
+                    multiple
+                >
+                    @foreach($kategori as $item)
+                        <option value="{{ $item->KategoriID }}">
+                            {{ $item->NamaKategori }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="detail-field description-field">
