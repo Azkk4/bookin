@@ -232,7 +232,7 @@ $ulasanData = $item->ulasan->map(function($u){
 <div class="book-row-wrapper">
 
     <div class="row-number">
-        {{ $index + 1 }}
+        {{ $buku->firstItem() + $index }}
     </div>
 
     <div class="book-row"
@@ -323,42 +323,42 @@ data-rating-summary='@json([
 </div>
 
         {{-- footer --}}
-        <div class="bottom-bar">
+        <div class="bottom-bar" id="paginationContainer">
 
     @if ($buku->hasPages())
 
-<div class="custom-pagination">
+    <div class="custom-pagination">
 
-    {{-- Previous --}}
-    @if ($buku->onFirstPage())
-        <span class="disabled">&lt;</span>
-    @else
-        <a href="{{ $buku->previousPageUrl() }}">&lt;</a>
-    @endif
-
-    {{-- Page Number --}}
-    @foreach ($buku->getUrlRange(1, $buku->lastPage()) as $page => $url)
-
-        @if ($page == $buku->currentPage())
-            <span class="active">{{ $page }}</span>
+        {{-- Previous --}}
+        @if ($buku->onFirstPage())
+            <span class="disabled">&lt;</span>
         @else
-            <a href="{{ $url }}">{{ $page }}</a>
+            <a href="{{ $buku->previousPageUrl() }}">&lt;</a>
         @endif
 
-    @endforeach
+        {{-- Page Number --}}
+        @foreach ($buku->getUrlRange(1, $buku->lastPage()) as $page => $url)
 
-    {{-- Next --}}
-    @if ($buku->hasMorePages())
-        <a href="{{ $buku->nextPageUrl() }}">&gt;</a>
-    @else
-        <span class="disabled">&gt;</span>
+            @if ($page == $buku->currentPage())
+                <span class="active">{{ $page }}</span>
+            @else
+                <a href="{{ $url }}">{{ $page }}</a>
+            @endif
+
+        @endforeach
+
+        {{-- Next --}}
+        @if ($buku->hasMorePages())
+            <a href="{{ $buku->nextPageUrl() }}">&gt;</a>
+        @else
+            <span class="disabled">&gt;</span>
+        @endif
+
+    </div>
+
     @endif
 
 </div>
-
-@endif
-
-        </div>
 
     </main>
 
@@ -644,6 +644,10 @@ data-rating-summary='@json([
 </div>
 
 <!-- COLLECTION NOTIFICATION --> <div class="collection-toast" id="collectionToast"> <div class="collection-toast-content"> <img src="{{ asset('Flaticon/checked.png') }}" alt="success" id="collectionToastIcon" > <span id="collectionToastText"></span> </div> </div>
+
+<script>
+window.pageOffset = {{ $buku->firstItem() ?? 1 }};
+</script>
 
 <script>
 window.allKategori = @json(

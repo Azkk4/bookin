@@ -194,11 +194,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function refreshBookNumbers() {
+        let startNumber = pageOffset || 1;
+
         document.querySelectorAll(".book-row-wrapper").forEach((row, index) => {
             const num = row.querySelector(".row-number");
 
             if (num) {
-                num.textContent = index + 1;
+                num.textContent = startNumber + index;
+            }
+        });
+    }
+
+    function refreshVisibleNumbers() {
+        const keyword = searchInput.value.trim();
+
+        const filtering = keyword !== "" || !activeCategories.includes("Semua");
+
+        if (!filtering) {
+            document
+                .querySelectorAll(".book-row-wrapper")
+                .forEach((row, index) => {
+                    const num = row.querySelector(".row-number");
+
+                    if (num) {
+                        num.textContent = pageOffset + index;
+                    }
+                });
+
+            return;
+        }
+
+        let number = 1;
+
+        document.querySelectorAll(".book-row-wrapper").forEach((row) => {
+            if (row.style.display !== "none") {
+                const num = row.querySelector(".row-number");
+
+                if (num) {
+                    num.textContent = number++;
+                }
             }
         });
     }
@@ -340,6 +374,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!item) return;
 
             searchInput.value = item.dataset.title;
+
+            suggestionBox.classList.remove("active");
+
+            document.querySelector('form[action*="dashboard"]').submit();
 
             suggestionBox.classList.remove("active");
         });
@@ -713,15 +751,29 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         emptySearch.classList.toggle("active", visibleCount === 0);
+
+        const paginationContainer = document.getElementById(
+            "paginationContainer",
+        );
+
+        const searchKeyword = searchInput.value.trim();
+
+        const filtering =
+            searchKeyword !== "" || !activeCategories.includes("Semua");
+
+        if (paginationContainer) {
+            paginationContainer.style.display = filtering ? "none" : "flex";
+        }
+
+        refreshVisibleNumbers();
     }
     /* =========================
    SEARCH INPUT
 ========================= */
 
     if (searchButton) {
-        searchButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            filterBooks();
+        searchButton.addEventListener("click", () => {
+            document.querySelector('form[action*="dashboard"]').submit();
         });
     }
 

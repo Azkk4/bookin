@@ -391,6 +391,9 @@ button:disabled {
 .btn-book {
     background: #c0ffc4;
 }
+.btn-category {
+    background: #7fd0ff;
+}
 
 .btn-users-top {
     height: 42px;
