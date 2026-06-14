@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Models\Buku;
 use App\Models\KategoriBuku;
+use App\Models\KategoriBukuRelasi;
 use App\Models\User;
 use App\Models\AuditLog;
 use App\Helpers\AuditHelper;
@@ -405,10 +406,10 @@ class AdminController extends Controller
     {
         $request->validate(
             [
-                'Judul' => 'required',
-                'Penulis' => 'required',
-                'Penerbit' => 'required',
-                'TahunTerbit' => 'required',
+                'Judul' => 'required|string|max:255',
+                'Penulis' => 'required|string|max:255',
+                'Penerbit' => 'required|string|max:255',
+                'TahunTerbit' => 'required|integer|min:1000|max:' . date('Y'),
                 'Deskripsi' => 'required',
                 'Stok' => 'required|integer|min:1',
                 'KategoriID' => 'required|array|min:1',
@@ -473,6 +474,10 @@ class AdminController extends Controller
 
         $buku->load('kategoriRelasi.kategori');
 
+        $kategoriText = $buku->kategoriRelasi
+            ->map(fn($item) => $item->kategori->NamaKategori)
+            ->join(', ');
+
         return response()->json([
             'success' => true,
             'message' => 'Buku berhasil ditambahkan',
@@ -485,7 +490,55 @@ class AdminController extends Controller
                 'Deskripsi' => $buku->Deskripsi,
                 'Stok' => $buku->Stok,
                 'Cover' => $buku->Cover,
+                'KategoriText' => $kategoriText,
             ]
+        ]);
+    }
+
+    public function updateBook(Request $request, $id)
+    {
+        $request->validate([
+            'Judul' => 'required|string|max:255',
+            'Penulis' => 'required|string|max:255',
+            'Penerbit' => 'required|string|max:255',
+            'TahunTerbit' => 'required|integer|min:1000|max:' . date('Y'),
+            'Deskripsi' => 'required|string',
+            'KategoriID' => 'required|array|min:1',
+        ]);
+
+        $buku = Buku::findOrFail($id);
+
+        $buku->update([
+            'Judul' => $request->Judul,
+            'Penulis' => $request->Penulis,
+            'Penerbit' => $request->Penerbit,
+            'TahunTerbit' => $request->TahunTerbit,
+            'Deskripsi' => $request->Deskripsi,
+        ]);
+
+        // hapus kategori lama
+        KategoriBukuRelasi::where(
+            'BukuID',
+            $buku->BukuID
+        )->delete();
+
+        // simpan kategori baru
+        foreach ($request->KategoriID as $kategoriId) {
+
+            KategoriBukuRelasi::create([
+                'BukuID' => $buku->BukuID,
+                'KategoriID' => $kategoriId
+            ]);
+
+        }
+
+        AuditHelper::log(
+            'Edit Buku',
+            'Mengubah buku "' . $buku->Judul . '"'
+        );
+
+        return response()->json([
+            'success' => true
         ]);
     }
 

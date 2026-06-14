@@ -412,20 +412,20 @@ data-rating-summary='@json([
                 <input class="edit-input" id="eTahun">
             </div>
 
-            <div class="detail-field">
+            <div class="detail-field category-field">
+
                 <label>Kategori</label>
-                <span class="view-value" id="vKategori"></span>
-                <select
-                    id="eKategori"
-                    class="edit-input"
-                    multiple
-                >
-                    @foreach($kategori as $item)
-                        <option value="{{ $item->KategoriID }}">
-                            {{ $item->NamaKategori }}
-                        </option>
-                    @endforeach
-                </select>
+
+                <span
+                    class="view-value"
+                    id="vKategori"
+                ></span>
+
+                <div
+                    id="eKategoriContainer"
+                    class="category-selector"
+                ></div>
+
             </div>
 
             <div class="detail-field description-field">
@@ -594,22 +594,16 @@ data-rating-summary='@json([
             </div>
 
             <div class="detail-field">
+
                 <label>
-    Kategori
-    <small>(CTRL + klik untuk pilih lebih dari satu)</small>
-</label>
+                    Kategori
+                </label>
 
-                <select id="addKategori" multiple>
+                <div
+                    id="addKategoriContainer"
+                    class="category-selector"
+                ></div>
 
-                    @foreach($kategori as $item)
-
-                    <option value="{{ $item->KategoriID }}">
-                        {{ $item->NamaKategori }}
-                    </option>
-
-                    @endforeach
-
-                </select>
             </div>
 
             <div class="detail-field description-field">
@@ -650,6 +644,17 @@ data-rating-summary='@json([
 </div>
 
 <!-- COLLECTION NOTIFICATION --> <div class="collection-toast" id="collectionToast"> <div class="collection-toast-content"> <img src="{{ asset('Flaticon/checked.png') }}" alt="success" id="collectionToastIcon" > <span id="collectionToastText"></span> </div> </div>
+
+<script>
+window.allKategori = @json(
+    $kategori->map(function($k){
+        return [
+            'id' => $k->KategoriID,
+            'nama' => $k->NamaKategori
+        ];
+    })
+);
+</script>
 
 </body>
 </html>

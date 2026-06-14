@@ -146,6 +146,98 @@ document.addEventListener("DOMContentLoaded", () => {
     let selectedBookId = null;
     let activeRow = null;
     let categorySort = "popular";
+    let selectedAddCategories = [];
+    let selectedEditCategories = [];
+
+    function renderAddCategories() {
+        const container = document.getElementById("addKategoriContainer");
+
+        container.innerHTML = "";
+
+        window.allKategori.forEach((kategori) => {
+            const active = selectedAddCategories.includes(kategori.id);
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                `
+            <div
+                class="category-chip ${active ? "active" : ""}"
+                data-id="${kategori.id}"
+            >
+                ${kategori.nama}
+            </div>
+            `,
+            );
+        });
+    }
+
+    function renderEditCategories() {
+        const container = document.getElementById("eKategoriContainer");
+
+        container.innerHTML = "";
+
+        window.allKategori.forEach((kategori) => {
+            const active = selectedEditCategories.includes(kategori.id);
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                `
+            <div
+                class="category-chip ${active ? "active" : ""}"
+                data-id="${kategori.id}"
+            >
+                ${kategori.nama}
+            </div>
+            `,
+            );
+        });
+    }
+
+    function refreshBookNumbers() {
+        document.querySelectorAll(".book-row-wrapper").forEach((row, index) => {
+            const num = row.querySelector(".row-number");
+
+            if (num) {
+                num.textContent = index + 1;
+            }
+        });
+    }
+
+    document.addEventListener("click", (e) => {
+        const chip = e.target.closest("#eKategoriContainer .category-chip");
+
+        if (!chip) return;
+
+        const id = Number(chip.dataset.id);
+
+        if (selectedEditCategories.includes(id)) {
+            selectedEditCategories = selectedEditCategories.filter(
+                (x) => x !== id,
+            );
+        } else {
+            selectedEditCategories.push(id);
+        }
+
+        renderEditCategories();
+    });
+
+    document.addEventListener("click", (e) => {
+        const chip = e.target.closest("#addKategoriContainer .category-chip");
+
+        if (!chip) return;
+
+        const id = Number(chip.dataset.id);
+
+        if (selectedAddCategories.includes(id)) {
+            selectedAddCategories = selectedAddCategories.filter(
+                (x) => x !== id,
+            );
+        } else {
+            selectedAddCategories.push(id);
+        }
+
+        renderAddCategories();
+    });
 
     function openActionModal(message, mode = "disable", callback = null) {
         actionText.innerText = message;
@@ -365,8 +457,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("eTahun").value = data.tahun;
 
-        document.getElementById("eKategori").value = data.kategori;
-
         document.getElementById("eDeskripsi").value = data.deskripsi;
     }
 
@@ -403,6 +493,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = e.target.closest(".book-row");
         if (!row) return;
 
+        const kategoriText = row.dataset.kategori;
+
+        // contoh:
+        // "Novel, Romance, Drama"
+
+        vKategori.textContent = kategoriText;
+
+        selectedEditCategories = [];
+
+        window.allKategori.forEach((k) => {
+            if (
+                kategoriText
+                    .split(",")
+                    .map((x) => x.trim())
+                    .includes(k.nama)
+            ) {
+                selectedEditCategories.push(k.id);
+            }
+        });
+
+        renderEditCategories();
+
         const data = row.dataset;
 
         const ulasanData = JSON.parse(data.ulasan || "[]");
@@ -436,26 +548,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (btnSave) {
-        btnSave.addEventListener("click", () => {
+        btnSave.addEventListener("click", async () => {
             if (!activeRow) return;
 
-            const data = activeRow.dataset;
+            const bookId = activeRow.dataset.bookId;
 
-            data.judul = document.getElementById("eJudul").value;
+            try {
+                const response = await fetch(`/admin/books/${bookId}`, {
+                    method: "PUT",
 
-            data.penulis = document.getElementById("ePenulis").value;
+                    headers: {
+                        "Content-Type": "application/json",
 
-            data.penerbit = document.getElementById("ePenerbit").value;
+                        "X-CSRF-TOKEN": document.querySelector(
+                            'meta[name="csrf-token"]',
+                        ).content,
+                    },
 
-            data.tahun = document.getElementById("eTahun").value;
+                    body: JSON.stringify({
+                        Judul: document.getElementById("eJudul").value,
 
-            data.kategori = document.getElementById("eKategori").value;
+                        Penulis: document.getElementById("ePenulis").value,
 
-            data.deskripsi = document.getElementById("eDeskripsi").value;
+                        Penerbit: document.getElementById("ePenerbit").value,
 
-            renderView(data);
+                        TahunTerbit: document.getElementById("eTahun").value,
 
-            closeEdit();
+                        Deskripsi: document.getElementById("eDeskripsi").value,
+
+                        KategoriID: selectedEditCategories,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.message || "Gagal menyimpan");
+                }
+
+                showCollectionToast("Buku berhasil diperbarui", "success");
+
+                location.reload();
+            } catch (error) {
+                showCollectionToast(error.message, "error");
+            }
         });
     }
 
@@ -669,6 +805,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (openAddBook) {
         openAddBook.addEventListener("click", () => {
             addBookOverlay.classList.add("active");
+            renderAddCategories();
         });
     }
 
@@ -749,13 +886,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("addStock").value,
                 );
 
-                const kategoriSelect = document.getElementById("addKategori");
-
-                const selectedKategori = [
-                    ...kategoriSelect.selectedOptions,
-                ].map((option) => option.value);
-
-                selectedKategori.forEach((id) => {
+                selectedAddCategories.forEach((id) => {
                     formData.append("KategoriID[]", id);
                 });
 
@@ -781,6 +912,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (result.success) {
                     showCollectionToast("Buku berhasil ditambahkan", "success");
 
+                    const kategoriText = window.allKategori
+                        .filter((k) => selectedAddCategories.includes(k.id))
+                        .map((k) => k.nama)
+                        .join(", ");
+
+                    const newData = {
+                        ...result.data,
+                        CoverUrl: result.data.Cover
+                            ? `/storage/books/${result.data.Cover}`
+                            : "/images/default-book.png",
+                    };
+
+                    const container =
+                        document.querySelector(
+                            ".book-row-wrapper",
+                        ).parentElement;
+
+                    container.insertAdjacentHTML(
+                        "afterbegin",
+                        createBookRow(newData),
+                    );
+
+                    refreshBookNumbers();
+
+                    // reset form
                     document.getElementById("addJudul").value = "";
                     document.getElementById("addPenulis").value = "";
                     document.getElementById("addPenerbit").value = "";
@@ -791,54 +947,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     coverPreview.style.display = "none";
                     uploadText.style.display = "block";
                     coverInput.value = "";
+                    selectedAddCategories = [];
 
-                    if (result.success) {
-                        showCollectionToast(
-                            "Buku berhasil ditambahkan",
-                            "success",
-                        );
-
-                        const kategoriSelect =
-                            document.getElementById("addKategori");
-
-                        const kategoriText = [...kategoriSelect.selectedOptions]
-                            .map((opt) => opt.textContent)
-                            .join(", ");
-
-                        const newData = {
-                            ...result.data,
-                            KategoriText: kategoriText,
-                            CoverUrl: result.data.Cover
-                                ? `/storage/books/${result.data.Cover}`
-                                : "/images/default-book.png",
-                        };
-
-                        const container =
-                            document.querySelector(
-                                ".book-row-wrapper",
-                            ).parentElement;
-
-                        container.insertAdjacentHTML(
-                            "afterbegin",
-                            createBookRow(newData),
-                        );
-
-                        // reset form
-                        document.getElementById("addJudul").value = "";
-                        document.getElementById("addPenulis").value = "";
-                        document.getElementById("addPenerbit").value = "";
-                        document.getElementById("addTahun").value = "";
-                        document.getElementById("addDeskripsi").value = "";
-                        document.getElementById("addStock").value = 1;
-
-                        coverPreview.style.display = "none";
-                        uploadText.style.display = "block";
-                        coverInput.value = "";
-                    }
-
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1200);
+                    renderAddCategories();
                 } else {
                     showCollectionToast(
                         result.message || "Gagal menambahkan buku",

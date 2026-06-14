@@ -150,6 +150,11 @@ Route::prefix('admin')
 
         Route::delete('/books/{id}', [AdminController::class, 'destroy']);
 
+        Route::put(
+            '/books/{id}',
+            [AdminController::class, 'updateBook']
+        );
+
         /*
         |--------------------------------------------------------------------------
         | KELOLA KATEGORI
