@@ -41,6 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return stockInput.value !== initialStockValue;
     }
 
+    function updateRowNumbers() {
+        let nomor = 1;
+
+        document.querySelectorAll(".book-row-wrapper").forEach((wrapper) => {
+            if (wrapper.style.display !== "none") {
+                const rowNumber = wrapper.querySelector(".row-number");
+
+                if (rowNumber) {
+                    rowNumber.textContent = nomor;
+
+                    nomor++;
+                }
+            }
+        });
+    }
+
     closeBtn.addEventListener("click", () => {
         // jika stok berubah
         if (isStockChanged()) {
@@ -106,14 +122,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const categoryButtons = document.querySelectorAll(".categories button");
 
-    const allButton = document.querySelector(".categories .active");
+    const allButton = document.querySelector(".categories button:first-child");
+
+    const bookWrappers = document.querySelectorAll(".book-row-wrapper");
+
+    const emptySearch = document.getElementById("emptySearch");
 
     categoryButtons.forEach((button) => {
         button.addEventListener("click", () => {
             const isAll = button.textContent.trim() === "Semua";
 
             // =====================
-            // JIKA TOMBOL SEMUA
+            // TOMBOL SEMUA
             // =====================
 
             if (isAll) {
@@ -121,32 +141,70 @@ document.addEventListener("DOMContentLoaded", () => {
                     btn.classList.remove("active");
                 });
 
-                button.classList.add("active");
+                allButton.classList.add("active");
+
+                bookWrappers.forEach((book) => {
+                    book.style.display = "flex";
+                });
+
+                emptySearch.style.display = "none";
 
                 return;
             }
 
             // =====================
-            // JIKA KATEGORI BIASA
+            // KATEGORI BIASA
             // =====================
 
             allButton.classList.remove("active");
 
             button.classList.toggle("active");
 
-            // jika tidak ada kategori aktif,
-            // kembali ke "Semua"
-
-            const activeCategories = [...categoryButtons].filter((btn) => {
-                return (
-                    btn.classList.contains("active") &&
-                    btn.textContent.trim() !== "Semua"
-                );
-            });
+            const activeCategories = [...categoryButtons]
+                .filter(
+                    (btn) =>
+                        btn.classList.contains("active") &&
+                        btn.textContent.trim() !== "Semua",
+                )
+                .map((btn) => btn.textContent.trim().toLowerCase());
 
             if (activeCategories.length === 0) {
                 allButton.classList.add("active");
+
+                bookWrappers.forEach((book) => {
+                    book.style.display = "flex";
+                });
+
+                emptySearch.style.display = "none";
+
+                return;
             }
+
+            // FILTER BUKU
+
+            let visibleCount = 0;
+
+            bookWrappers.forEach((book) => {
+                const row = book.querySelector(".book-row");
+
+                const categories = row.dataset.kategori.toLowerCase();
+
+                const match = activeCategories.some((cat) =>
+                    categories.includes(cat),
+                );
+
+                if (match) {
+                    book.style.display = "flex";
+
+                    visibleCount++;
+                } else {
+                    book.style.display = "none";
+                }
+            });
+
+            emptySearch.style.display = visibleCount === 0 ? "block" : "none";
+
+            updateRowNumbers();
         });
     });
 });

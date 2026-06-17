@@ -160,7 +160,7 @@
     <div class="book-row-wrapper">
 
         <div class="row-number">
-            {{ $index + 1 }}
+            {{ $loop->iteration }}
         </div>
 
         <div class="book-row"
@@ -186,6 +186,9 @@
                 "rating_average" => $item->rating_average,
                 "rating_distribution" => $item->rating_distribution
             ])'
+            data-kategori="{{ $item->kategoriRelasi
+            ->pluck('kategori.NamaKategori')
+            ->implode(', ') }}"
         >
 
             <div class="book-cover-thumb">
@@ -231,13 +234,47 @@
     </div>
 
     @endforeach
+    <div class="empty-search" id="emptySearch">
+    Buku tidak ditemukan
+</div>
 
     {{-- FOOTER --}}
     <div class="bottom-bar">
 
-        {{ $buku->links() }}
+        @if ($buku->hasPages())
 
-    </div>
+        <div class="custom-pagination">
+
+            {{-- Previous --}}
+            @if ($buku->onFirstPage())
+                <span class="disabled">&lt;</span>
+            @else
+                <a href="{{ $buku->previousPageUrl() }}">&lt;</a>
+            @endif
+
+            {{-- Page Number --}}
+            @foreach ($buku->getUrlRange(1, $buku->lastPage()) as $page => $url)
+
+                @if ($page == $buku->currentPage())
+                    <span class="active">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}">{{ $page }}</a>
+                @endif
+
+            @endforeach
+
+            {{-- Next --}}
+            @if ($buku->hasMorePages())
+                <a href="{{ $buku->nextPageUrl() }}">&gt;</a>
+            @else
+                <span class="disabled">&gt;</span>
+            @endif
+
+        </div>
+
+        @endif
+
+        </div>
 
 </main>
 

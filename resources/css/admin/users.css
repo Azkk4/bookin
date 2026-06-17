@@ -582,8 +582,6 @@ button:disabled {
     box-shadow:
         0 8px 20px rgba(0, 0, 0, 0.12),
         0 0 0 2px rgba(122, 212, 255, 0.35);
-
-    background: #f2fbff;
 }
 
 /* ROLE COLORS */
